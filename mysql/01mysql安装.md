@@ -2,13 +2,26 @@
 
 ## yum安装
 
-1. 安装mysql yum源（文件在 ./doc/mysql57-community-release-el7-11.noarch.rpm）
+1. 检查系统中是否已安装了mysql
+
+   ```shell
+   [root@node01 ~]# rpm -qa | grep mysql
+   ```
+
+   如果已安装，则先卸载
+
+   ```shell
+   [root@node01 ~]# rpm -e --nodeps mysql-libs-5.1.73-7.el6.x86_64
+   rpm包卸载命令格式：rpm -e --nodeps 包名
+   ```
+
+2. 安装mysql yum源（文件在 ./doc/mysql57-community-release-el7-11.noarch.rpm）
 
    ```sql
    [root@node01 ~]# yum localinstall mysql57-community-release-el7-11.noarch.rpm
    ```
 
-2. 编辑MySQL的yum源配置，指定要安装的MySQL版本（此步可跳过，不修改），默认安装mysql 5.7
+3. 编辑MySQL的yum源配置，指定要安装的MySQL版本（此步可跳过，不修改），默认安装mysql 5.7
 
    ```shell
    [root@node01 ~]# vi /etc/yum.repos.d/mysql-community.repo # enabled=1指mysql的默认安装项
@@ -81,7 +94,7 @@
    gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
    ```
 
-3. yum安装
+4. yum安装
 
    ```shell
    [root@node01 ~]# yum install mysql-community-server -y
@@ -101,7 +114,7 @@
    /usr/bin/mysqladmin
    ```
 
-4. 启动MySQL
+5. 启动MySQL
 
    ```shell
    [root@node01 ~]# service mysqld status # 查看mysql状态
@@ -130,7 +143,7 @@
    Jan 23 03:54:45 node01 systemd[1]: Started MySQL Server.
    ```
 
-5. 查看默认随机密码
+6. 查看默认随机密码
 
    安装完成后在/var/log/mysqld.log文件中生成了一个随机的默认密码
 
@@ -140,7 +153,7 @@
    可知默认密码是 13=gdpmnU,ez
    ```
 
-6. 登录mysql
+7. 登录mysql
 
    ```shell
    [root@node01 ~]# mysql -u root -p 
@@ -148,7 +161,7 @@
    mysql> 
    ```
 
-7. 修改默认密码
+8. 修改默认密码
 
    如果不希望密码太复杂，可以把密码设置的简单点， 比如这里我把密码设置成：root  
 
@@ -208,7 +221,7 @@
 
    **最后执行 alter user 'root'@'localhost' identified by 'root';**
 
-8. 配置mysql远程登录
+9. 配置mysql远程登录
 
    ```sql
    mysql> use mysql;
