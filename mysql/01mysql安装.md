@@ -18,7 +18,7 @@
 2. 安装mysql yum源（文件在 ./doc/mysql57-community-release-el7-11.noarch.rpm）
 
    ```sql
-   [root@node01 ~]# yum localinstall mysql57-community-release-el7-11.noarch.rpm
+   [root@node01 ~]# yum -y localinstall mysql57-community-release-el7-11.noarch.rpm
    ```
 
 3. 编辑MySQL的yum源配置，指定要安装的MySQL版本（此步可跳过，不修改），默认安装mysql 5.7
@@ -101,6 +101,15 @@
    ```
 
    ```shell
+   注意，如果上面那步执行完成之后报错:
+   Public key for mysql-community-common-5.7.38-1.el7.x86_64.rpm is not installed
+   
+   需要按如下步骤再执行一次
+   [root@node01 ~]# rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022 # 这个公钥可能每年都不一样
+   [root@node01 ~]# yum install mysql-community-server -y
+   ```
+
+   ```shell
    [root@node01 ~]#  rpm -qa | grep -i mysql
    mysql57-community-release-el7-11.noarch
    mysql-community-common-5.7.33-1.el7.x86_64
@@ -121,7 +130,7 @@
    Redirecting to /bin/systemctl status mysqld.service
    ● mysqld.service - MySQL Server
       Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)
-      Active: inactive (dead)
+      Active: inactive (dead) # 未启动
         Docs: man:mysqld(8)
               http://dev.mysql.com/doc/refman/en/using-systemd.html
    [root@node01 ~]# service mysqld start # 启动mysql
@@ -130,7 +139,7 @@
    Redirecting to /bin/systemctl status mysqld.service
    ● mysqld.service - MySQL Server
       Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)
-      Active: active (running) since Sat 2021-01-23 03:54:45 CST; 8s ago
+      Active: active (running) since Sat 2021-01-23 03:54:45 CST; 8s ago # 已启动
         Docs: man:mysqld(8)
               http://dev.mysql.com/doc/refman/en/using-systemd.html
      Process: 4855 ExecStart=/usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid $MYSQLD_OPTS (code=exited, status=0/SUCCESS)
@@ -219,7 +228,7 @@
    Query OK, 0 rows affected (0.00 sec) 
    ```
 
-   **最后执行 alter user 'root'@'localhost' identified by 'root';**
+   最后执行 `alter user 'root'@'localhost' identified by 'root';`
 
 9. 配置mysql远程登录
 
