@@ -1,27 +1,37 @@
 # mysql 安装
 
-## yum安装
+## 一、环境检查
 
-1. 检查系统中是否已安装了mysql
+检查系统中是否已安装了mysql
+
+```shell
+[root@node01 ~]# rpm -qa | grep mysql
+[root@node01 ~]# rpm -qa | grep mariadb
+```
+
+如果已安装，则先卸载
+
+```shell
+[root@node01 ~]# rpm -e --nodeps mysql-libs-5.1.73-7.el6.x86_64
+[root@node01 ~]# rpm -e --nodeps mariadb-libs-5.5.56-2.el7.x86_64
+# rpm包强制卸载命令格式：rpm -e --nodeps 包名
+```
+
+## 二、安装
+
+这里采用安装mysql的yum源来安装mysql，需要保持网络畅通。
+
+yum源下载地址：https://dev.mysql.com/downloads/repo/yum/
+
+安装mysql yum源（文件在 ./doc/ 目录下）
+
+1. 安装
 
    ```shell
-   [root@node01 ~]# rpm -qa | grep mysql
-   ```
-
-   如果已安装，则先卸载
-
-   ```shell
-   [root@node01 ~]# rpm -e --nodeps mysql-libs-5.1.73-7.el6.x86_64
-   rpm包卸载命令格式：rpm -e --nodeps 包名
-   ```
-
-2. 安装mysql yum源（文件在 ./doc/mysql57-community-release-el7-11.noarch.rpm）
-
-   ```sql
    [root@node01 ~]# yum -y localinstall mysql57-community-release-el7-11.noarch.rpm
    ```
 
-3. 编辑MySQL的yum源配置，指定要安装的MySQL版本（此步可跳过，不修改），默认安装mysql 5.7
+2. 编辑MySQL的yum源配置，指定要安装的MySQL版本（此步可跳过，不修改），默认安装mysql 5.7
 
    ```shell
    [root@node01 ~]# vi /etc/yum.repos.d/mysql-community.repo # enabled=1指mysql的默认安装项
@@ -94,17 +104,17 @@
    gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
    ```
 
-4. yum安装
+3. yum安装
 
    ```shell
    [root@node01 ~]# yum install mysql-community-server -y
    ```
 
    ```shell
-   注意，如果上面那步执行完成之后报错:
-   Public key for mysql-community-common-5.7.38-1.el7.x86_64.rpm is not installed
+   # 注意，如果上面那步执行完成之后报错:
+   # Public key for mysql-community-common-5.7.38-1.el7.x86_64.rpm is not installed
    
-   需要按如下步骤再执行一次
+   # 需要按如下步骤再执行一次
    [root@node01 ~]# rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022 # 这个公钥可能每年都不一样
    [root@node01 ~]# yum install mysql-community-server -y
    ```
@@ -123,7 +133,9 @@
    /usr/bin/mysqladmin
    ```
 
-5. 启动MySQL
+## 三、运行
+
+1. 开启MySQL服务
 
    ```shell
    [root@node01 ~]# service mysqld status # 查看mysql状态
@@ -152,9 +164,13 @@
    Jan 23 03:54:45 node01 systemd[1]: Started MySQL Server.
    ```
 
-6. 查看默认随机密码
+## 四、初始化配置
 
-   安装完成后在/var/log/mysqld.log文件中生成了一个随机的默认密码
+### 1、配置密码
+
+1. 查看默认随机密码
+
+   mysql服务启动后会在/var/log/mysqld.log文件中生成了一个随机的默认密码
 
    ```shell
    [root@node01 ~]# more /var/log/mysqld.log
@@ -162,7 +178,7 @@
    可知默认密码是 13=gdpmnU,ez
    ```
 
-7. 登录mysql
+2. 登录mysql
 
    ```shell
    [root@node01 ~]# mysql -u root -p 
@@ -170,7 +186,7 @@
    mysql> 
    ```
 
-8. 修改默认密码
+3. 修改默认密码
 
    如果不希望密码太复杂，可以把密码设置的简单点， 比如这里我把密码设置成：root  
 
@@ -223,30 +239,31 @@
    mysql> set global validate_password_policy=0;
    Query OK, 0 rows affected (0.00 sec) 
    
-   //设置密码的长度为1，但是密码长度最短为4，虽然设置成1，但还是4
+   //设置密码的长度为1，默认为8，但是密码长度最短为4，虽然设置成1，但还是4
    mysql> set global validate_password_length=1;
    Query OK, 0 rows affected (0.00 sec) 
+   
+   最后执行 alter user 'root'@'localhost' identified by 'root';
    ```
 
-   最后执行 `alter user 'root'@'localhost' identified by 'root';`
 
-9. 配置mysql远程登录
+### 2、允许远程登录
 
-   ```sql
-   mysql> use mysql;
-   Reading table information for completion of table and column names
-   You can turn off this feature to get a quicker startup with -A
-   
-   Database changed
-   mysql> update user set host = '%' where user = 'root'; # root用户可以再任何机器上登录到本机
-   Query OK, 1 row affected (0.01 sec)
-   Rows matched: 1  Changed: 1  Warnings: 0
-   
-   mysql> flush privileges;
-   Query OK, 0 rows affected (0.00 sec)
-   ```
+```sql
+mysql> use mysql;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
 
-   
+Database changed
+mysql> update user set host = '%' where user = 'root'; # root用户可以再任何机器上登录到本机
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+
 
 
 
