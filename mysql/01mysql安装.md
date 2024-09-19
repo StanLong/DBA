@@ -2,19 +2,11 @@
 
 ## 一、环境检查
 
-检查系统中是否已安装了mysql
+卸载已安装的mysql
 
 ```shell
-[root@node01 ~]# rpm -qa | grep mysql
-[root@node01 ~]# rpm -qa | grep mariadb
-```
-
-如果已安装，则先卸载
-
-```shell
-[root@node01 ~]# rpm -e --nodeps mysql-libs-5.1.73-7.el6.x86_64
-[root@node01 ~]# rpm -e --nodeps mariadb-libs-5.5.56-2.el7.x86_64
-# rpm包强制卸载命令格式：rpm -e --nodeps 包名
+[root@node01 ~]# rpm -qa | grep mysql | xargs rpm -e --nodeps
+[root@node01 ~]# rpm -qa | grep mariadb | xargs rpm -e --nodeps
 ```
 
 ## 二、安装
