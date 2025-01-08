@@ -218,3 +218,20 @@ redis03/redis-cli -p 7003 shutdown
 redis04/redis-cli -p 7004 shutdown
 redis05/redis-cli -p 7005 shutdown
 redis06/redis-cli -p 7006 shutdown
+
+--------------------------------------------------------------------------
+redis卸载
+1、 停止Redis服务
+
+#查看Redis服务进行
+ps -ef | grep redis
+#停止Redis服务
+redis-cli -a 111111 -p 6370 shutdown
+#再次查看Redis服务进程
+ps -ef | grep redis
+
+2、删除/usr/local/bin目录下与Redis相关的文件
+
+
+
+
