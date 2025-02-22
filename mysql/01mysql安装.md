@@ -254,8 +254,3 @@ Rows matched: 1  Changed: 1  Warnings: 0
 mysql> flush privileges;
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-
-
-
-
