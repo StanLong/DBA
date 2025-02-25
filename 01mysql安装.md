@@ -14,3 +14,32 @@ https://blog.csdn.net/m0_62808124/article/details/126769669
 
 ## 三、docker安装
 
+### 1、 docker
+
+```shell
+docker run -d -p 3306:3306 \
+> -v /app/myconf:/etc/mysql/conf.d \
+> -v /app/mydata:/var/lib/mysql \
+> -e MYSQL_ROOT_PASSWORD=root \
+> mysql:8.0
+```
+
+### 2、 docker compose
+
+```yaml
+name: mysql8
+services: 
+  mysql: 
+    container_name: mysql
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=wordpress
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - /app/myconf:/etc/mysql/conf.d
+    restart: always
+```
+
