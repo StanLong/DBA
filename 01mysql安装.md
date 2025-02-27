@@ -36,10 +36,13 @@ services:
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=wordpress
+      - MYSQL_DATABASE=root
+      - TZ=Asia/Shanghai
     volumes:
       - mysql-data:/var/lib/mysql
       - /app/myconf:/etc/mysql/conf.d
     restart: always
+volumes:
+  mysql-data:
 ```
 
