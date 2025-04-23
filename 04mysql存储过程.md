@@ -13,6 +13,7 @@ show procedure status;
 
 ```sql
 CREATE DATABASE IF NOT EXISTS scott default charset utf8 COLLATE utf8_general_ci;
+-- ：utf8mb4是utf8的扩展，支持更多字符，包括Emoji表情等四字节Unicode字符，但占用更多存储空间。
 ```
 
 - mysql 存储过程
