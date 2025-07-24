@@ -55,7 +55,7 @@ service mysqld restart
 
 ## 3、创建同步用户
 
-在主节点创建一个用户repl，用于从节点链接主节点时使用。
+在主节点创建一个用户sync，用于从节点链接主节点时使用。
 
 ```mysql
 mysql> CREATE USER 'sync'@'node04' IDENTIFIED BY 'Sync@node04';
