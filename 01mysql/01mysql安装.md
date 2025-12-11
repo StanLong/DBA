@@ -227,15 +227,18 @@ yum源下载地址：https://dev.mysql.com/downloads/repo/yum/
    修改密码检查策略
 
    ```sql
+   // 查看验证相关的变量
+   SHOW VARIABLES LIKE '%validate%';
+   
    //设置密码检查策略为0(即LOW，默认为MEDIUM)
-   mysql> set global validate_password_policy=0;
+   mysql> set global validate_password_policy=0;   -- mysql8 中改成  set global validate_password.policy=0;
    Query OK, 0 rows affected (0.00 sec) 
    
    //设置密码的长度为1，默认为8，但是密码长度最短为4，虽然设置成1，但还是4
-   mysql> set global validate_password_length=1;
+   mysql> set global validate_password_length=1;   -- mysql8 中改成 set global validate_password.length=1;
    Query OK, 0 rows affected (0.00 sec) 
    
-   最后执行 alter user 'root'@'localhost' identified by 'root';
+   最后执行 alter user 'root'@'localhost' identified by 'root'; 123！@#
    ```
 
 
