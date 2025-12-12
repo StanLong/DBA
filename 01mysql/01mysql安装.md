@@ -256,4 +256,13 @@ Rows matched: 1  Changed: 1  Warnings: 0
 
 mysql> flush privileges;
 Query OK, 0 rows affected (0.00 sec)
+
+--  mysql8 里因为插件 caching_sha2_password 的影响会导致远程登录不生效，需要启用 mysql_native_password 插件
+vim /etc/my.cnf
+追加 mysql_native_password=ON
+修改 root@% 的 认证插件为 mysql_native_password
+use mysql;
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '1qaz@WSX';  -- 这里要保证密码复杂度，不然会报错
+flush privileges;
+
 ```
