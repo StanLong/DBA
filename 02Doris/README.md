@@ -1,2 +1,4 @@
-# 集群节点规划
+单节点docker安装脚本
+
+https://doris.apache.org/files/start-doris.sh
 
