@@ -100,17 +100,21 @@ yum源下载地址：https://dev.mysql.com/downloads/repo/yum/
 
    ```shell
    [root@node01 ~]# yum install mysql-community-server -y
-   ```
+   # 如果是 CentOS 8、RHEL 8 默认启用了自带的 MySQL 模块，它屏蔽了官方仓库里的安装包 需要先禁用系统自带的模块，然后再执行安装命令即可
 
+   # 禁用系统自带的模块， 执行过程中如果出现确认提示 [y/N]，输入 y 并回车即可
+   yum module disable mysql
+   ```
+   
    ```shell
    # 注意，如果上面那步执行完成之后报错:
    # Public key for mysql-community-common-5.7.38-1.el7.x86_64.rpm is not installed
    
-   # 需要按如下步骤再执行一次
+# 需要按如下步骤再执行一次
    [root@node01 ~]# rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022 # 这个公钥可能每年都不一样
    [root@node01 ~]# yum install mysql-community-server -y
    ```
-
+   
    ```shell
    [root@node01 ~]#  rpm -qa | grep -i mysql
    mysql57-community-release-el7-11.noarch
