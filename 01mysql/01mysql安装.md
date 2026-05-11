@@ -238,7 +238,7 @@ yum源下载地址：https://dev.mysql.com/downloads/repo/yum/
    mysql> set global validate_password_length=1;   -- mysql8 中改成 set global validate_password.length=1;
    Query OK, 0 rows affected (0.00 sec) 
    
-   最后执行 alter user 'root'@'localhost' identified by 'root'; 123！@#
+   最后执行 alter user 'root'@'localhost' identified by '1qaz@WSX';
    ```
 
 
@@ -260,6 +260,7 @@ Query OK, 0 rows affected (0.00 sec)
 --  mysql8 里因为插件 caching_sha2_password 的影响会导致远程登录不生效，需要启用 mysql_native_password 插件
 vim /etc/my.cnf
 追加 mysql_native_password=ON
+-- 重启 mysql
 修改 root@% 的 认证插件为 mysql_native_password
 use mysql;
 ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '1qaz@WSX';  -- 这里要保证密码复杂度，不然会报错
